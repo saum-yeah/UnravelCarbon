@@ -84,7 +84,7 @@ def get_emissions():
     
     if cached_result:
         print("Returning cached result from Redis") 
-        return jsonify({"source": "cached result from Redis", "data": json.loads(cached_result)})
+        return jsonify({"source": "cached result from Redis", "data emission": json.loads(cached_result)})
 
     # Collect and combine multiple partial matches if they exist
     combined_emissions = {}
@@ -122,7 +122,7 @@ def get_emissions():
     redis_client.set(cache_key, json.dumps(combined_emissions), ex=3600)  # Cache for 1 hour
 
     print("Returning new result with combined and filled data")
-    return jsonify({"source": "combined from cache and API call", "data": combined_emissions})
+    return jsonify({"source": "combined from cache and API call", "data emission": combined_emissions})
 
 # Running the Flask app
 if __name__ == "__main__":

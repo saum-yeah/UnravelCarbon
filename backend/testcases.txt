@@ -1,0 +1,57 @@
+test case 1: frequently queried and same request , already cached results
+    request body :
+        {
+        "startDate": "2021-01-25",
+        "endDate": "2021-12-02",
+        "businessFacility":["Heybo Marina Bay Link Mall", "Fresh Kitchen Katong"]
+        }
+
+    response:
+        {
+            "data emission": {
+                "Fresh Kitchen Katong": 300083.36665494,
+                "Heybo Marina Bay Link Mall": 91693.119671888
+                    },
+            "source": "cached result from Redis"
+        }
+
+------------------------------------------------------------------------------------------------------------------
+
+test case 2: When part of the requested date range is already cached, while some dates are not cached.
+request body :
+        {
+        "startDate": "2022-06-25",
+        "endDate": "2022-12-15",
+        "businessFacility":[ "Fresh Kitchen Katong"]
+        }
+
+
+    response:
+        {
+        "data emission": {},
+        "source": "combined from cache and API call"
+        }
+
+
+----------------------------------------------------------------------------------------------------------------------
+
+test case 3: A new request
+request body :
+        {
+        "startDate": "2021-01-25",
+        "endDate": "2021-08-05",
+        "businessFacility":[ "Fresh Kitchen Fusionopolis"]
+        }
+
+
+    response:
+       {
+        "data emission": {
+            "Fresh Kitchen Fusionopolis": 38028.836825289
+        },
+        "source": "combined from cache and API call"
+        }
+
+
+    server log : "Querying missing range: 2021-01-25 00:00:00 to 2021-08-05 00:00:00"
+
