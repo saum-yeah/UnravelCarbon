@@ -86,7 +86,7 @@ def get_emissions():
         print("Returning cached result from Redis") 
         return jsonify({"source": "cached result from Redis", "data": json.loads(cached_result)})
 
-    # Step 1: Collect and combine multiple partial matches
+    # Collect and combine multiple partial matches if they exist
     combined_emissions = {}
     partial_keys = []
     for existing_key in redis_client.scan_iter():
@@ -99,7 +99,7 @@ def get_emissions():
                         combined_emissions[facility] = combined_emissions.get(facility, 0) + emission
                 partial_keys.append(existing_key)
     
-    # Step 2: Check for gaps in date range
+    #Check for gaps in date range
     total_covered_start = min(parse_key(key)[0] for key in partial_keys) if partial_keys else None
     total_covered_end = max(parse_key(key)[1] for key in partial_keys) if partial_keys else None
 
@@ -118,7 +118,7 @@ def get_emissions():
             missing_key = f"{missing_start.strftime('%Y-%m-%d')}_{missing_end.strftime('%Y-%m-%d')}_{','.join(sorted(facilities))}"
             redis_client.set(missing_key, json.dumps(new_data), ex=3600)  # Cache for 1 hour
     
-    # Step 3: Cache the final result for the requested range
+    # Cache the final result for the requested range
     redis_client.set(cache_key, json.dumps(combined_emissions), ex=3600)  # Cache for 1 hour
 
     print("Returning new result with combined and filled data")
