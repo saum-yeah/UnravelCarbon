@@ -29,7 +29,7 @@ def parse_dates(date_str):
 
 # A function to filter data based on start and end dates and facilities provided
 def get_filtered_data(start_date, end_date, facilities):
-    data = emissions_data.copy()
+    data = emissions_data
     #apply filter conditions
     filtered = data[
         (data["TRANSACTION DATE"] >= start_date) & 
@@ -122,7 +122,7 @@ def get_emissions():
     redis_client.set(cache_key, json.dumps(combined_emissions), ex=3600)  # Cache for 1 hour
 
     print("Returning new result with combined and filled data")
-    return jsonify({"source": "combined", "data": combined_emissions})
+    return jsonify({"source": "combined from cache and API call", "data": combined_emissions})
 
 # Running the Flask app
 if __name__ == "__main__":
