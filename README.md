@@ -1,7 +1,8 @@
 ### UnravelCarbon Assessment
 
 ### Clone this repository
-git clone 
+git clone https://github.com/saum-yeah/UnravelCarbon.git  
+navigate in it using
 cd UnravelCarbon
 
 ### Navigate to the assessment directory
