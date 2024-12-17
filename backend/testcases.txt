@@ -1,57 +1,51 @@
-test case 1: frequently queried and same request , already cached results
-    request body :
+test case 1: New request
+request body :
         {
-        "startDate": "2021-01-25",
-        "endDate": "2021-12-02",
-        "businessFacility":["Heybo Marina Bay Link Mall", "Fresh Kitchen Katong"]
+        "startDate": "2023-03-01",
+        "endDate": "2023-07-01",
+        "businessFacility": ["GreenEat Jurong"]
         }
 
     response:
-        {
-            "data emission": {
-                "Fresh Kitchen Katong": 300083.36665494,
-                "Heybo Marina Bay Link Mall": 91693.119671888
-                    },
-            "source": "cached result from Redis"
+       {
+        "data emission": {},
+        "source": "combined from cache and API call"
         }
 
 ------------------------------------------------------------------------------------------------------------------
 
-test case 2: When part of the requested date range is already cached, while some dates are not cached.
+test case 2: Partial Cached Results
 request body :
         {
-        "startDate": "2022-06-25",
-        "endDate": "2022-12-15",
-        "businessFacility":[ "Fresh Kitchen Katong"]
+        "startDate": "2022-01-01",
+        "endDate": "2022-05-01",
+        "businessFacility": ["Fresh Kitchen Fusionopolis"]
         }
-
 
     response:
         {
-        "data emission": {},
-        "source": "combined from cache and API call"
+        "data emission": {
+            "Fresh Kitchen Fusionopolis": 70980.712775479
+        },
+        "source": "cached result from Redis"
         }
 
 
 ----------------------------------------------------------------------------------------------------------------------
 
-test case 3: A new request
+test case 3: Frequently Queried, Cached Results
 request body :
         {
-        "startDate": "2021-01-25",
-        "endDate": "2021-08-05",
-        "businessFacility":[ "Fresh Kitchen Fusionopolis"]
+        "startDate": "2021-02-01",
+        "endDate": "2021-06-01",
+        "businessFacility": ["GreenEat Changi", "Heybo Marina Bay Link Mall"]
         }
-
 
     response:
        {
         "data emission": {
-            "Fresh Kitchen Fusionopolis": 38028.836825289
+            "GreenEat Changi": 18060.223223545,
+            "Heybo Marina Bay Link Mall": 44703.260624674
         },
-        "source": "combined from cache and API call"
+        "source": "cached result from Redis"
         }
-
-
-    server log : "Querying missing range: 2021-01-25 00:00:00 to 2021-08-05 00:00:00"
-
